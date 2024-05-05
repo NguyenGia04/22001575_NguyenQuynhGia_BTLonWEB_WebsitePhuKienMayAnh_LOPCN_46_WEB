@@ -1,45 +1,43 @@
-
 document.addEventListener("DOMContentLoaded", function() {
-    if (khachhangJSON) {
-        var khachhang = JSON.parse(khachhangJSON);
+    var khachhangListJSON = localStorage.getItem("khachhangList");
+    if (khachhangListJSON) {
+        var khachhangList = JSON.parse(khachhangListJSON);
+        var khachhang = khachhangList[khachhangList.length-1];
         document.getElementById("login-tendangnhap").value = khachhang.tenDangNhap;
-        document.getElementById("login-matkhau").value = khachhang.matKhau;
+        document.getElementById("login-matkhau").value = khachhang.matKhau;   
     }
 });
 
-var khachhangJSON = localStorage.getItem("khachhang");
-var khachhang = JSON.parse(khachhangJSON);
 function kiemTraLoginTDN() {
     var login_tendangnhap = document.getElementById("login-tendangnhap").value;
-    if (login_tendangnhap == ""){
-        document.getElementById("error-message-tdn").innerHTML = "Tên đăng nhập không được để trống";
-        return false;
-    }else{
-        document.getElementById("error-message-tdn").innerHTML = "";
+    var khachhangListJSON = localStorage.getItem("khachhangList");
+    if (khachhangListJSON) {
+        var khachhangList = JSON.parse(khachhangListJSON);
+        for (var i = 0; i < khachhangList.length; i++) {
+            var khachhang = khachhangList[i];
+            if (khachhang.tenDangNhap && login_tendangnhap === khachhang.tenDangNhap) {
+                return true;
+            }
+        }
     }
-    if (login_tendangnhap !==  khachhang.tenDangNhap) {
-        document.getElementById("error-message-tdn").innerHTML = "Tên đăng nhập không tồn tại";
-        return false;
-    }
-    return true;
+    document.getElementById("error-message-tdn").innerHTML = "Tên đăng nhập không tồn tại";
+    return false;
 }
 
 function kiemTraLoginMK() {
     var login_matkhau = document.getElementById("login-matkhau").value;
-   
-    if(login_matkhau ==""){
-        document.getElementById("error-message-mk").innerHTML = "Mật khẩu không được để trống";
-        return false;
-    }else{
-        document.getElementById("error-message-mk").innerHTML = "";
-    }
-    if(kiemTraLoginTDN()){
-        if(login_matkhau !== khachhang.matKhau){
-            document.getElementById("error-message-mk").innerHTML = "Mật khẩu không chính xác";
-            return false;
+    var khachhangListJSON = localStorage.getItem("khachhangList");
+    if (khachhangListJSON) {
+        var khachhangList = JSON.parse(khachhangListJSON);
+        for (var i = 0; i < khachhangList.length; i++) {
+            var khachhang = khachhangList[i];
+            if (khachhang.matKhau && login_matkhau === khachhang.matKhau) {
+                return true;
+            }
         }
     }
-    return true;
+    document.getElementById("error-message-mk").innerHTML = "Mật khẩu không chính xác";
+    return false;
 }
 
 function kiemTraFormDN(){
