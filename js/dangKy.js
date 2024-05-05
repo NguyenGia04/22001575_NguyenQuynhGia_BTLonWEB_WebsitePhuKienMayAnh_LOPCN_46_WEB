@@ -10,7 +10,7 @@ function kiemTraHoTen() {
         return flase;
     }
     if (!pattern.test(hoten)) {
-        document.getElementById("error-message-hoTen").innerHTML = "Họ và tên không hợp lệ";
+        document.getElementById("error-message-hoTen").innerHTML = "Họ và tên bắt đầu bằng chữ viết hoa và không chứa ký tự đặt biệt";
         return false;
     } else {
         document.getElementById("error-message-hoTen").innerHTML = "";
@@ -27,7 +27,7 @@ function kiemTraDienThoai() {
         return flase;
     }
     if (!pattern.test(dienthoai)) {
-        document.getElementById("error-message-sdt").innerHTML = "Số điện thoại không hợp lệ";
+        document.getElementById("error-message-sdt").innerHTML = "Số điện thoại phải 10 số và bắt đầu các đôi sau (03,04,05,06,07,09)";
         return false;
     } else {
         document.getElementById("error-message-sdt").innerHTML = "";
@@ -44,7 +44,7 @@ function kiemTraTenDN() {
         return flase;
     }
     if (!pattern.test(tendn)) {
-        document.getElementById("error-message-tdn").innerHTML = "Tên đăng nhập không được chứa kí tự đặc biệt";
+        document.getElementById("error-message-tdn").innerHTML = "Tên đăng nhập phải từ 6 kí tự trở lên và không được chứa kí tự đặc biệt";
         return false;
     } else {
         document.getElementById("error-message-tdn").innerHTML = "";
@@ -55,13 +55,13 @@ function kiemTraTenDN() {
 function kiemTraPassWord() {
     //Ô Này bắt buộc nhập, mật khẩu phải chứa ít nhất 1 ký tự chữ và 1 ký tự số, mật khẩu phải từ 6 ký tự trở lên
     var mk = document.forms["forml"]["txtMatKhau"].value;
-    var pattern = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    var pattern = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{6,}$/;
     if (mk == "") {
         document.getElementById("error-message-mk").innerHTML = "Không được rỗng";
         return flase;
     }
     if (!pattern.test(mk)) {
-        document.getElementById("error-message-mk").innerHTML = "Mật khẩu không hợp lệ";
+        document.getElementById("error-message-mk").innerHTML = "Mật khẩu chứa ít nhất 1 ký tự chữ và 1 ký tự số, mật khẩu phải từ 6 ký tự trở lên";
         return false;
     } else {
         document.getElementById("error-message-mk").innerHTML = "";
@@ -106,8 +106,6 @@ function kiemTraFormDK() {
     return false;
 }
 
-var khachhang;
-
 function luuThongTinDangKy() {
     if (kiemTraFormDK()) {
         var hoTen = document.getElementById("txtHoTen").value;
@@ -115,21 +113,19 @@ function luuThongTinDangKy() {
         var tenDangNhap = document.getElementById("txtTenDangNhap").value;
         var matKhau = document.getElementById("txtMatKhau").value;
         var email = document.getElementById("txtEmail").value;
-        khachhang = {
+
+        var khachhangList = JSON.parse(localStorage.getItem("khachhangList")) || [];
+        var khachhang = {
             hoTen: hoTen,
             dienThoai: dienThoai,
             tenDangNhap: tenDangNhap,
             matKhau: matKhau,
             email: email
         };
-        localStorage.setItem("khachhang", JSON.stringify(khachhang));
+        khachhangList.push(khachhang);
+        localStorage.setItem("khachhangList", JSON.stringify(khachhangList));
+
         window.location.href = "../html/dangNhap.html";
     }
 }
 
-var khachhangJSON = localStorage.getItem("khachhang");
-if (khachhangJSON) {
-    var khachhang = JSON.parse(khachhangJSON);
-    document.getElementById("login-tendangnhap").value = khachhang.tenDangNhap;
-    document.getElementById("login-matkhau").value = khachhang.matKhau;
-}
