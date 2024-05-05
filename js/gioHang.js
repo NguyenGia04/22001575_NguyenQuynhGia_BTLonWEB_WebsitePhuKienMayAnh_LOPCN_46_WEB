@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
         cartItemsDiv.innerHTML = html;
 
         var tongTienSpan = document.getElementById('tongTien');
-        tongTienSpan.innerText = totalAmount.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+        tongTienSpan.innerText = totalAmount + ' VND'
     } else {
         cartItemsDiv.innerHTML = '<p>Giỏ hàng của bạn đang trống</p>';
     }
